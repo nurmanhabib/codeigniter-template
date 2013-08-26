@@ -286,7 +286,7 @@ class Template
 			
 			// if there's messages of this type, prepare for printing
 			if(sizeof($messages)){
-				$this->data['messages'] .= '<div class="alert-message '.$type.'">';
+				$this->data['messages'] .= '<div class="alert alert-'.$type.'">';
 			
 				foreach($messages as $message){
 					$this->data['messages'] .= '<p>'.$message.'</p>';
