@@ -217,6 +217,26 @@ class Template
 		$this->data['head'] .= $head;
 		
 	}
+	
+	
+	/**
+	 * Clear all data in the foot
+	 */
+	function clear_foot(){
+		
+		$this->data['foot'] = '';
+		
+	}
+	
+	
+	/**
+	 * Add tag to foot
+	 */
+	function add_foot($foot){
+		
+		$this->data['foot'] .= $foot;
+		
+	}
 
 
 	/**
