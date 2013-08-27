@@ -10,6 +10,7 @@ $template_conf = array(
 	'css' => '',
 	'js' => '',
 	'head' => '',
+	'foot' => '',
 	'messages' => '',
 	'assets_dir' => 'assets/'
 );
