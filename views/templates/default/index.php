@@ -48,6 +48,6 @@
 		</div>
 		
 	</section>
-
+	<?php echo $foot?>
 </body>
 </html>
