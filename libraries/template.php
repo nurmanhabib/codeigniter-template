@@ -348,6 +348,28 @@ class Template
 	
 	
 	/**
+	 * Custom: Mengganti konfigurasi
+	 */
+	function set_config($template_conf = array()){
+		foreach($template_conf as $citem => $cval)
+		{
+			$this->data[$citem] = $cval;
+		}
+		unset($template_conf);
+	}
+	
+	
+	
+	/**
+	 * Custom: Mengganti template
+	 */
+	function set_template($template = 'default'){	
+		$this->set_config(array('template' => $template));		
+	}
+	
+	
+	
+	/**
 	 * Send the data compiled data to the screen
 	 */
 	function build(){
