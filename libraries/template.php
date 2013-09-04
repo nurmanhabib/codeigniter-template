@@ -344,6 +344,14 @@ class Template
 		}
 			
 	}
+		
+	
+	/**
+	 * Custom: Mengambil value dari item konfigurasi
+	 */
+	function config($item){
+		return $this->data[$item];
+	}
 	
 	
 	
