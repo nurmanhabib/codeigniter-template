@@ -122,6 +122,20 @@ class Template
 		$this->data['content'] = $this->CI->load->view($view, $data, true);
         
 	}
+
+	
+	
+	/**
+	 * Custom: load konten ke main area yang berada di dalam template tertentu
+	 * Fungsi ini sama halnya dengan set_contet(), hanya saja peletakkan file berada dalam 1 folder template
+	 */
+	function set_content_template($view, $data = array(), $template = ''){
+		
+		$view = 'templates/' . ($template == '' ? $this->data['template'] : $template) . '/' . $view;
+		
+		$this->data['content'] = $this->CI->load->view($view, $data, true);
+        
+	}
 	
 	
 	/**
