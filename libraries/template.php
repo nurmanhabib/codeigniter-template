@@ -119,8 +119,11 @@ class Template
 	 */
 	function set_content($view, $data = array()){
 		
+	        // Mengambil pesan yang diterima dari template
+	        $this->data['messages']	= $this->messages();
+	        
 		// Menggabungkan data yang dikirimkan
-		$data = array_merge_recursive($data, $this->data);
+		$data = array_merge($data, $this->data);
 		
 		$this->data['content'] = $this->CI->load->view($view, $data, true);
         
