@@ -119,6 +119,9 @@ class Template
 	 */
 	function set_content($view, $data = array()){
 		
+		// Menggabungkan data yang dikirimkan
+		$data = array_merge_recursive($data, $this->data);
+		
 		$this->data['content'] = $this->CI->load->view($view, $data, true);
         
 	}
@@ -131,9 +134,11 @@ class Template
 	 */
 	function set_content_template($view, $data = array(), $template = ''){
 		
+		// Mengarahkan file content berada dalam template tertentu
 		$view = 'templates/' . ($template == '' ? $this->data['template'] : $template) . '/' . $view;
 		
-		$this->data['content'] = $this->CI->load->view($view, $data, true);
+		// Memanggil kembali fungsi set_content()
+		$this->set_content($view, $data);
         
 	}
 	
@@ -389,6 +394,14 @@ class Template
 		$this->set_config(array('template' => $template));		
 	}
 	
+	
+	/**
+	 * Custom: Mengambil pesan
+	 */
+	function messages(){
+		$this->prepare_messages();
+		return $this->config('messages');
+	}
 	
 	
 	/**
