@@ -15,6 +15,7 @@ class Template
 	var $css_load = '';
 	var $js_raw = '';
 	var $js_load = '';
+	var $ico_load = '';
 	var $http_headers = array();
 	var $messages = array(
 		'warning' => array(), 
@@ -119,12 +120,6 @@ class Template
 	 */
 	function set_content($view, $data = array()){
 		
-	        // Mengambil pesan yang diterima dari template
-	        $this->data['messages']	= $this->messages();
-	        
-		// Menggabungkan data yang dikirimkan
-		$data = array_merge($data, $this->data);
-		
 		$this->data['content'] = $this->CI->load->view($view, $data, true);
         
 	}
@@ -216,6 +211,34 @@ class Template
 
 			$this->js_raw = $js_contents;
 		
+		}
+		
+	}
+	
+	
+	/**
+	 * Clears all JS. Raw and scripts
+	 */
+	function clear_ico(){
+		
+		$this->data['ico'] = '';
+		
+	}
+	
+	
+	/**
+	 * Add ICO
+	 * Menambahkan tag ico di dalam tag head;
+	 * 
+	 */
+	function add_ico($ico, $load = true){
+		
+		if($load){
+		
+			$this->ico_load .= '<link rel="shortcut icon" href="'.$this->CI->config->item('base_url') . $this->data['assets_dir'] . 'ico/' . $ico . '?'
+				.filemtime($this->data['assets_dir'] . 'ico/' . $ico)
+				.'">';
+
 		}
 		
 	}
@@ -366,6 +389,18 @@ class Template
 		}
 			
 	}
+	
+	
+	
+	/**
+	 * Menambahkan tag ico
+	 * ico file
+	 */
+	function prepare_ico(){
+
+		$this->data['ico']	.= $this->ico_load;
+			
+	}
 		
 	
 	/**
@@ -413,6 +448,7 @@ class Template
 	function build(){
 	
 		$this->prepare_jcss();
+		$this->prepare_ico();
 		$this->prepare_messages();
 		$this->build_http_header();
 		
