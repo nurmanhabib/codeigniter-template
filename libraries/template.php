@@ -119,6 +119,12 @@ class Template
 	 * in the data array to be later sent to the template
 	 */
 	function set_content($view, $data = array()){
+
+		// Menyiapkan pesan agar dapat di akses di view content
+		$this->prepare_messages();
+		
+		// Menggabungkan data yang di panggil dari controller ke view content
+		$data	= array_merge($data, $this->data);
 		
 		$this->data['content'] = $this->CI->load->view($view, $data, true);
         
@@ -190,9 +196,9 @@ class Template
 	
 	
 	/**
-	 * Add CSS
+	 * Add JS
 	 * 
-	 * By default, the CSS will be loaded using the normal <link> method
+	 * By default, the JS will be loaded using the normal <script> method
 	 * Optionally, you can choose to have the contents of the file dumped 
 	 * straight to screen to reduce the number of resources the browser
 	 * needs to load at run time
@@ -217,7 +223,7 @@ class Template
 	
 	
 	/**
-	 * Clears all JS. Raw and scripts
+	 * Clears all ICO.
 	 */
 	function clear_ico(){
 		
@@ -228,18 +234,14 @@ class Template
 	
 	/**
 	 * Add ICO
-	 * Menambahkan tag ico di dalam tag head;
+	 * Menambahkan favicon untuk browser;
 	 * 
 	 */
-	function add_ico($ico, $load = true){
+	function add_ico($ico){
 		
-		if($load){
-		
-			$this->ico_load .= '<link rel="shortcut icon" href="'.$this->CI->config->item('base_url') . $this->data['assets_dir'] . 'ico/' . $ico . '?'
-				.filemtime($this->data['assets_dir'] . 'ico/' . $ico)
-				.'">';
-
-		}
+		$this->ico_load .= '<link rel="shortcut icon" href="'.$this->CI->config->item('base_url') . $this->data['assets_dir'] . 'ico/' . $ico . '?'
+			.filemtime($this->data['assets_dir'] . 'ico/' . $ico)
+			.'">';
 		
 	}
 	
@@ -352,9 +354,10 @@ class Template
 			// if there's messages of this type, prepare for printing
 			if(sizeof($messages)){
 				$this->data['messages'] .= '<div class="alert alert-'.$type.'">';
+				$this->data['messages'] .= '<button type="button" class="close" data-dismiss="alert">&times;</button>';
 			
 				foreach($messages as $message){
-					$this->data['messages'] .= '<p>'.$message.'</p>';
+					$this->data['messages'] .= '<p class="message">' . $message. '</p>';
 				}
 			
 				$this->data['messages'] .= '</div>';
