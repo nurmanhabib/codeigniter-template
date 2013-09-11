@@ -28,6 +28,7 @@ class Template
 		'body' => '',
 		'button' => array()
 	);
+	var $prepare = FALSE;
 	
 	
 	public function __construct($config = array())
@@ -124,14 +125,10 @@ class Template
 	 * in the data array to be later sent to the template
 	 */
 	function set_content($view, $data = array()){
-
-		// Menyiapkan pesan dan modal agar dapat di akses di view content
-		$this->prepare_messages();
-		$this->prepare_modal();
 		
 		// Menggabungkan data yang di panggil dari controller ke view content
 		$data	= array_merge($data, $this->data);
-		
+
 		$this->data['content'] = $this->CI->load->view($view, $data, true);
         
 	}
@@ -504,6 +501,9 @@ class Template
 			$this->data[$citem] = $cval;
 		}
 		unset($template_conf);
+		
+		// Jika data belum siap, maka memanggil fungsi prepare_all()
+		if(!$this->prepare) $this->prepare_all();
 	}
 	
 	
@@ -512,30 +512,36 @@ class Template
 	 * Custom: Mengganti template
 	 */
 	function set_template($template = 'default'){	
-		$this->set_config(array('template' => $template));		
+
+		$this->set_config(array('template' => $template));	
+
 	}
-	
+
 	
 	/**
-	 * Custom: Mengambil pesan
+	 * Custom: Menyiapkan variabel ke string
 	 */
-	function messages(){
+	function prepare_all()
+	{			
+		$this->prepare_jcss();
+		$this->prepare_ico();
 		$this->prepare_messages();
-		return $this->config('messages');
+		$this->prepare_modal();		
+		$this->build_http_header();
+
+		// Ketika sudah disiapkan, maka statusnya prepare menjadi TRUE
+		$this->prepare = TRUE;
 	}
-	
+		
 	
 	/**
 	 * Send the data compiled data to the screen
 	 */
 	function build(){
-	
-		$this->prepare_jcss();
-		$this->prepare_ico();
-		$this->prepare_messages();
-		$this->prepare_modal();
-		$this->build_http_header();
-		
+
+		// Jika data belum siap, maka memanggil fungsi prepare_all()
+		if(!$this->prepare) $this->prepare_all();
+
 		$this->CI->load->view('templates/'.$this->data['template'].'/index.php', $this->data);
 		
 	}
