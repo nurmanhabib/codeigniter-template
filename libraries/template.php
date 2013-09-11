@@ -24,7 +24,7 @@ class Template
 		'info' => array()
 	);
 	var $modal = array(
-		'title' => '', 
+		'title' => 'Pesan Modal', 
 		'body' => '',
 		'button' => array()
 	);
@@ -335,11 +335,21 @@ class Template
 	 * Menambah sebuah pesan modal
 	 * dengan jquery dan bootstrap
 	 */
-	function add_modal($body, $title = 'Pesan Dialog', $button = array()){
+	function add_modal($title = '', $body = '', $button = array()){
 
-		$this->modal['title'] = $title;
+		if($title) $this->modal['title'] = $title;
+		
 		$this->modal['body'] = $body;		
-		$this->modal['button'] = $button;
+		
+		$button_default = array(
+			'type'	=> 'button',
+			'class'	=> 'btn btn-default',
+			'value' => 'Close',
+			'data'	=> 'data-dismiss="modal"'
+			);
+
+		foreach($button as $btn)
+			$this->modal['button'] = array(array_merge($button_default, $btn));
 	
 	}
 	
@@ -393,9 +403,15 @@ class Template
 	function prepare_modal(){
 		
 		$modal	= $this->modal;
+			
+		// add moda from flash data
+		$flash = $this->CI->session->flashdata('modal');
+		if($flash != ''){
+			$modal['body'] = $flash;
+		}
 
 		// if there's modal of this type, prepare for printing
-		if(count($modal)){
+		if($modal['body']){
 			// Modal
 			$this->data['messages'] .= '<div class="modal fade" id="rooModal" tabindex="-1" role="dialog" aria-labelledby="rooModalLabel" aria-hidden="true">';
 			$this->data['messages'] .= '<div class="modal-dialog">';
