@@ -1,55 +1,54 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title><?php echo $site_title?> - <?php echo $site_name?></title>
-	<?php echo $head?>
-	<?php echo $css?>
-	<?php echo $js?>
+	<title><?php echo $page_title . ' | ' . $site_name ?></title>
+
+	<?php
+	// Menampilkan head meta dll.
+	echo $head;
+	?>
+
+	<?php
+	// Menampilkan script CSS
+	echo $css;
+	?>
+
 </head>
-
 <body>
+	<div class="container">
 
-	<section id="header">
+		<?php
+		// Menampilkan pesan dan modal
+		// Anda dapat menaruh variabel ini untuk menampilkan di setiap konten
+		// Sebaiknya menampilkan hanya di 1 tempat (file index.php atau konten dinamis)
+		// Karena jika di sini dan di konten di cetak, maka akan menampilkan 2 kali
+		echo $messages;
+		?>
 
-		<div class="container">
-	
-			<div class="page-header">
-		
-				<h1><?php echo $site_name?></h1>
-	
-			</div>	
-	
-		</div>
-	
-	</section>
+		<?php
+		// Menampilkan konten web dinamis
+		// Konten dinamis akan di proses melalui controller
+		echo $content;
+		?>
 
+		<p class="text-muted">Page rendered in {elapsed_time} seconds</p>
 
-	<section id="main">
+	</div>
 
-		<div class="container">
-		
-			<div class="main">
-				<?php echo $messages?>
-				<?php echo $content?>
-			</div>
-			
-		</div>
+	<?php
+	// Menampilkan script JS
+	echo $js;
+	?>
 
-	</section>
+	<?php
+	// Menampilkan footer
+	echo $foot;
+	?>
 
-
-	<section id="footer">
-
-		<div class="container">
-		
-			<p><br />Page rendered in {elapsed_time} seconds</p>
-	
-		</div>
-		
-	</section>
-	
-	<?php echo $foot?>
-	
 </body>
 </html>
+
+<?php
+/* End of file index.php */
+/* Location: ./application/views/templates/default/index.php */
