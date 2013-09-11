@@ -23,6 +23,16 @@ class Template
 		'success' => array(), 
 		'info' => array()
 	);
+	var $modal = array(
+		'title' => '', 
+		'body' => '', 
+		'button' => array(
+			'type'	=> 'button',
+			'class'	=> 'btn btn-default',
+			'data'	=> 'data-dismiss = "modal"',
+			'value'	=> 'Close'
+			)
+	);
 	
 	
 	public function __construct($config = array())
@@ -120,8 +130,9 @@ class Template
 	 */
 	function set_content($view, $data = array()){
 
-		// Menyiapkan pesan agar dapat di akses di view content
+		// Menyiapkan pesan dan modal agar dapat di akses di view content
 		$this->prepare_messages();
+		$this->prepare_modal();
 		
 		// Menggabungkan data yang di panggil dari controller ke view content
 		$data	= array_merge($data, $this->data);
@@ -326,6 +337,19 @@ class Template
 	
 	
 	/**
+	 * Menambah sebuah pesan modal
+	 * dengan jquery dan bootstrap
+	 */
+	function add_modal($body, $title = 'Pesan Dialog', $button = array(array())){
+	
+		$this->modal['title'] = $title;
+		$this->modal['body'] = $body;		
+		$this->modal['button'] = $button;
+	
+	}
+	
+	
+	/**
 	 * Serves purely as a wrapper for the CI flashdata
 	 * Just to keep syntax organised
 	 */
@@ -353,18 +377,63 @@ class Template
 			
 			// if there's messages of this type, prepare for printing
 			if(sizeof($messages)){
-				$this->data['messages'] .= '<div class="alert alert-'.$type.'">';
-				$this->data['messages'] .= '<button type="button" class="close" data-dismiss="alert">&times;</button>';
-			
 				foreach($messages as $message){
-					$this->data['messages'] .= '<p class="message">' . $message. '</p>';
+					$this->data['messages'] .= '<div class="alert alert-'.$type.'">';
+					$this->data['messages'] .= '<button type="button" class="close" data-dismiss="alert">&times;</button>';
+					$this->data['messages'] .= $message;
+					$this->data['messages'] .= '</div>';
 				}
-			
-				$this->data['messages'] .= '</div>';
 			}
 			
 		}
 	
+	}
+	
+	
+	/**
+	 * Format data dari modal (bootstrap),
+	 * menampilkan pesan dalam bentuk modal
+	 * membutuhkan jquery dan bootstrap
+	 */
+	function prepare_modal(){
+		
+		$modal	= $this->modal;
+
+		// if there's modal of this type, prepare for printing
+		if(count($modal)){
+			// Modal
+			$this->data['messages'] .= '<div class="modal fade" id="rooModal" tabindex="-1" role="dialog" aria-labelledby="rooModalLabel" aria-hidden="true">';
+			$this->data['messages'] .= '<div class="modal-dialog">';
+			$this->data['messages'] .= '<div class="modal-content">';
+
+			// Header
+			$this->data['messages'] .= '<div class="modal-header">';
+			$this->data['messages'] .= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+			$this->data['messages'] .= '<h4 class="modal-title">'.$modal['title'].'</h4>';
+			$this->data['messages'] .= '</div>';
+
+			// Body
+			$this->data['messages'] .= '<div class="modal-body">'.$modal['body'].'</div>';
+
+			// Footer
+			if(count($modal['button'])){
+				$this->data['messages'] .= '<div class="modal-footer">';
+				foreach ($modal['button'] as $button) {
+					$this->data['messages'] .= '<button type="'.$button['type'].'" ';
+					$this->data['messages'] .= 'class="'.$button['class'].'" ';
+					$this->data['messages'] .= $button['data'];
+					$this->data['messages'] .= '>'.$button['value'].'</button>';
+				}
+				$this->data['messages'] .= '</div>';
+			}
+
+			// Close tag
+			$this->data['messages'] .= '</div>'; //.modal-content
+			$this->data['messages'] .= '</div>'; //.modal-dialog
+			$this->data['messages'] .= '</div>'; //.modal
+
+			$this->add_foot('<script type="text/javascript">$("#rooModal").modal()</script>');
+		}
 	}
 	
 	
@@ -453,6 +522,7 @@ class Template
 		$this->prepare_jcss();
 		$this->prepare_ico();
 		$this->prepare_messages();
+		$this->prepare_modal();
 		$this->build_http_header();
 		
 		$this->CI->load->view('templates/'.$this->data['template'].'/index.php', $this->data);
