@@ -25,13 +25,8 @@ class Template
 	);
 	var $modal = array(
 		'title' => '', 
-		'body' => '', 
-		'button' => array(
-			'type'	=> 'button',
-			'class'	=> 'btn btn-default',
-			'data'	=> 'data-dismiss = "modal"',
-			'value'	=> 'Close'
-			)
+		'body' => '',
+		'button' => array()
 	);
 	
 	
@@ -340,8 +335,8 @@ class Template
 	 * Menambah sebuah pesan modal
 	 * dengan jquery dan bootstrap
 	 */
-	function add_modal($body, $title = 'Pesan Dialog', $button = array(array())){
-	
+	function add_modal($body, $title = 'Pesan Dialog', $button = array()){
+
 		$this->modal['title'] = $title;
 		$this->modal['body'] = $body;		
 		$this->modal['button'] = $button;
