@@ -58,9 +58,15 @@ A quick example to get you going is to update the default welcome controller in 
 
 ##Available methods
 
+####function set_template($template_folder)
+Memilih template folder yang ada di views/template/<templatefolder>
+
 ####function set_content($view, $data = array())
 Load the content for the main area of the page, and store
 in the data array to be later sent to the template
+
+####function set_content_template($view, $data = array())
+Menambahkan content dengan file berada di folder template
 	
 ####function clear_css()
 Clears all CSS. Raw and scripts
@@ -80,6 +86,12 @@ Optionally, you can choose to have the contents of the file dumped
 straight to screen to reduce the number of resources the browser
 needs to load at run time
 			
+####function clear_ico()
+Clear all data in favicon
+
+####function add_ico($head)
+Menambahkan favicon
+			
 ####function clear_head()
 Clear all data in the head
 
@@ -89,6 +101,9 @@ Add tag to head
 ####function add_message($type, $message)
 Adds a message to the current page stack
 Available types are warning, error, success and info
+
+####function add_modal($title, $body, $button)
+Menambahkan modal di view (bootstrap)
 
 ####function set_flashdata($type, $message)
 Serves purely as a wrapper for the CI flashdata
